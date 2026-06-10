@@ -1,0 +1,51 @@
+# ros_gz_bridge config — published on Gazebo side (gz.msgs), republished
+# on ROS side (sensor_msgs / std_msgs / etc).
+#
+# Direction: GZ_TO_ROS for sensor data, ROS_TO_GZ for actuator commands.
+
+# /clock — required so use_sim_time:=true works for the OS nodes.
+- ros_topic_name: "/clock"
+  gz_topic_name: "/clock"
+  ros_type_name: "rosgraph_msgs/msg/Clock"
+  gz_type_name: "gz.msgs.Clock"
+  direction: GZ_TO_ROS
+
+# ── HEAD CAMERA (OAK-D Lite — rgbd_camera) ────────────────────────────
+# Gazebo rgbd_camera publishes on base topic /head_camera; subtopics below.
+- ros_topic_name: "/head_camera/image_raw"
+  gz_topic_name: "/head_camera/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/head_camera/camera_info"
+  gz_topic_name: "/head_camera/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/head_camera/depth/image_raw"
+  gz_topic_name: "/head_camera/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/head_camera/points"
+  gz_topic_name: "/head_camera/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+# ── SPINE LIDAR (top of column, high vantage 360° scan) ───────────────
+- ros_topic_name: "/spine_lidar/scan"
+  gz_topic_name: "/spine_lidar/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+# ── BASE LIDAR (top of base, in front of spine, near-ground 360° scan) ─
+- ros_topic_name: "/base_lidar/scan"
+  gz_topic_name: "/base_lidar/scan"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
