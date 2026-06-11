@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<robot name="vector" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+
+
+<gazebo>
+  <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+    <parameters>$(arg ros2_controllers_config)</parameters>
+  </plugin>
+</gazebo>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     IMPORTANT: self_collide is FALSE on every link.
+     The original xacro had self_collide=true which caused internal
+     mesh collisions between the torso, slider, arms, and base,
+     generating violent physics forces that made the robot wobble.
+     Only the wheels and casters need collision with the ground plane.
+     ══════════════════════════════════════════════════════════════════ -->
+
+<gazebo reference="base_link">
+  <mu1>0.0</mu1>
+  <mu2>0.0</mu2>
+  <self_collide>false</self_collide>
+  <gravity>true</gravity>
+</gazebo>
+
+<gazebo reference="slider_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="torso_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="left_arm_link_1_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="left_shoulder_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_arm_link_1_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_shoulder_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_bicep_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="left_bicep_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_forearm_v1_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="left_forearm_v2_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="neck_v2_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="head_v1_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<!-- Wheels: high friction for traction, no self-collide -->
+<gazebo reference="right_wheel_1">
+  <mu1>1.5</mu1>
+  <mu2>1.5</mu2>
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="left_wheel_1">
+  <mu1>1.5</mu1>
+  <mu2>1.5</mu2>
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="camera_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="left_hand_palm_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="left_hand_finger_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_hand_palm_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_hand_finger_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+
+
+</robot>

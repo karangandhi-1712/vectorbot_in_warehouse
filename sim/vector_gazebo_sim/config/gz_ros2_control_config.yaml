@@ -1,0 +1,83 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 50
+    use_sim_time: true
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    base_controller:
+      type: diff_drive_controller/DiffDriveController
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    # The torso uses an effort-based pipeline:
+    #   OS publishes Float64MultiArray on /torso_position_controller/commands
+    #   → torso_position_pid node (software PID + gravity FF + slew)
+    #   → /torso_effort_controller/commands (Float64MultiArray, Newtons)
+    #   → torso_effort_controller below
+    #   → torso_z_joint effort interface in Gazebo
+    torso_effort_controller:
+      type: effort_controllers/JointGroupEffortController
+
+# ──────────────────────────────────────────────────────────────────────
+# DIFF DRIVE — base_controller
+# In Jazzy diff_drive_controller, max_deceleration must be ≤ 0
+# (it's negative by convention). Easiest fix: just don't set it.
+# Same for max_jerk/min_jerk — leave them out and the controller
+# uses sensible defaults.
+#
+# wheel_diameter_mm = 150  →  radius = 0.075
+# wheel_separation: must MATCH the URDF property of the same name
+# (currently 0.455m = 0.50m end-to-end minus wheel_thickness). Keeping
+# them out of sync produces odometry that drifts in proportion to the
+# ratio difference whenever the robot turns.
+# ──────────────────────────────────────────────────────────────────────
+base_controller:
+  ros__parameters:
+    use_sim_time: true
+    left_wheel_names: ["left_wheel"]
+    right_wheel_names: ["right_wheel"]
+    wheel_separation: 0.455
+    wheel_radius: 0.075
+
+    odom_frame_id: odom
+    # base_frame_id must match the URDF root link.
+    # This URDF uses base_link as root (no base_footprint link exists).
+    base_frame_id: base_link
+    publish_rate: 20.0
+    open_loop: false
+    enable_odom_tf: true
+
+    cmd_vel_timeout: 1.0
+
+    linear:
+      x:
+        max_velocity: 0.5
+        min_velocity: -0.5
+        max_acceleration: 1.0
+    angular:
+      z:
+        max_velocity: 1.0
+        min_velocity: -1.0
+        max_acceleration: 2.0
+
+torso_effort_controller:
+  ros__parameters:
+    use_sim_time: true
+    joints: [slider_z_axis]
+# ──────────────────────────────────────────────────────────────────────
+# JTC — partial joint goals enabled so the OS arm_manager can publish
+# only the 8 robstride joints without listing the dsservo wrist joints.
+# ──────────────────────────────────────────────────────────────────────
+joint_trajectory_controller:
+  ros__parameters:
+    use_sim_time: true
+    command_interfaces: [position]
+    state_interfaces:   [position, velocity]
+    allow_partial_joints_goal: true
+    action_monitor_rate: 20.0
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 0.01
