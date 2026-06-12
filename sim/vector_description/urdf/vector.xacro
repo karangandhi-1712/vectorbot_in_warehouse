@@ -1,33 +1,33 @@
 <?xml version="1.0" ?>
 <robot name="vector" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<!-- Define xacro property for ros2_controllers config file path -->
-<!-- This allows the launch file to pass in the correct absolute path for Gazebo Harmonic -->
 <xacro:arg name="ros2_controllers_config" default="config/industrial_robot_ros2_controllers.yaml" />
 
 <xacro:include filename="$(find vector_description)/urdf/materials.xacro" />
 <xacro:include filename="$(find vector_description)/urdf/vector.trans" />
 <xacro:include filename="$(find vector_description)/urdf/vector.gazebo" />
 <xacro:include filename="$(find vector_description)/urdf/vector.ros2_control.xacro" />
+
 <link name="base_link">
-  <!-- SIM-TUNED: Light base (5 kg) at z=0.  Upper-body links are set to
-       near-zero mass (0.01 kg each) so gravity exerts almost no torque on
-       the top-heavy structure.  No collision on base_link — only wheels
-       and casters touch the ground. -->
   <inertial>
     <origin xyz="0.0 0.0 -0.5" rpy="0 0 0"/>
     <mass value="100.0"/>
     <inertia ixx="1.0" iyy="1.0" izz="0.5" ixy="0.0" iyz="0.0" ixz="0.0"/>
   </inertial>
-  <visual>
+  <visual name="base_bottom_visual">
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find vector_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find vector_description)/meshes/base_bottom.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="white"/>
+    <material name="grey"/>
   </visual>
-  <!-- No body collision box — only wheels and casters should touch the ground.
-       A body box would scrape the ground during turns and cause wobble. -->
+  <visual name="base_column_visual">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/base_column.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="black"/>
+  </visual>
   <collision name="rear_caster_collision">
     <origin xyz="-0.18 0.0 0.0195" rpy="0 0 0"/>
     <geometry>
@@ -45,14 +45,14 @@
     <geometry>
       <sphere radius="0.02"/>
     </geometry>
-    <material name="dark_grey"/>
+    <material name="black"/>
   </visual>
   <visual name="front_caster_visual">
     <origin xyz="0.18 0.0 0.0175" rpy="0 0 0"/>
     <geometry>
       <sphere radius="0.02"/>
     </geometry>
-    <material name="dark_grey"/>
+    <material name="black"/>
   </visual>
 </link>
 
@@ -82,7 +82,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/torso_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="dark_grey"/>
   </visual>
 </link>
 
@@ -97,7 +97,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/left_arm_link_1_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="black"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -112,7 +112,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/left_shoulder_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="black"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -127,7 +127,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/right_arm_link_1_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="black"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -142,7 +142,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/right_shoulder_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="black"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -157,7 +157,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/right_bicep_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="white"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -172,7 +172,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/left_bicep_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="white"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -187,7 +187,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/right_forearm_v1_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="white"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -202,7 +202,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/left_forearm_v2_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="white"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -217,7 +217,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/neck_v2_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="black"/>
   </visual>
 </link>
 
@@ -304,7 +304,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/left_hand_palm_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="dark_grey"/>
   </visual>
 </link>
 
@@ -319,7 +319,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/left_hand_finger_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="dark_grey"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -334,7 +334,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/right_hand_palm_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="silver"/>
+    <material name="dark_grey"/>
   </visual>
 </link>
 
@@ -349,7 +349,7 @@
     <geometry>
       <mesh filename="file://$(find vector_description)/meshes/right_hand_finger_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
-    <material name="dark_grey"/>
+    <material name="silver"/>
   </visual>
 </link>
 
@@ -358,9 +358,6 @@
   <parent link="base_link"/>
   <child link="slider_1"/>
   <axis xyz="0.0 0.0 1.0"/>
-  <!-- effort raised from 100→2000 to match PID max_effort.
-       Old value of 100 was barely above gravity (78N), leaving no margin.
-       damping=500 prevents instant free-fall during the 5s controller startup. -->
   <limit upper="0.4" lower="-0.6" effort="2000" velocity="100"/>
   <dynamics damping="50.0" friction="10.0"/>
 </joint>
@@ -474,8 +471,6 @@
   <child link="left_wheel_1"/>
   <axis xyz="0.0 1.0 0.0"/>
 </joint>
-
-
 
 <joint name="camera" type="fixed">
   <origin xyz="0.045 0.00125 0.06171" rpy="0 0 0"/>
