@@ -32,7 +32,9 @@ def resolve_active_joints():
     """The 14 arm + neck joints the JTC controls in simulation."""
     return [
         "left_shoulder_holder", "left_shoulder", "left_bicep", "left_forearm",
+        "left_wrist_pitch", "left_wrist_yaw", "left_hand_palm",
         "right_shoulder_holder", "right_shoulder", "right_bicep", "right_forearn",
+        "right_wrist_pitch", "right_wrist_yaw", "right_hand_palm",
         "neck", "head",
     ]
 

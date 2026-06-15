@@ -145,6 +145,12 @@
     </geometry>
     <material name="silver"/>
   </visual>
+  <collision>
+    <origin xyz="-0.21143 0.186998 -1.014718" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/right_bicep_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
 </link>
 
 <link name="left_bicep_1">
@@ -160,6 +166,12 @@
     </geometry>
     <material name="silver"/>
   </visual>
+  <collision>
+    <origin xyz="-0.21143 -0.191 -1.010242" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/left_bicep_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
 </link>
 
 <link name="right_forearm_v1_1">
@@ -175,6 +187,12 @@
     </geometry>
     <material name="silver"/>
   </visual>
+  <collision>
+    <origin xyz="-0.233013 0.217698 -0.781318" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/right_forearm_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
 </link>
 
 <link name="left_forearm_v2_1">
@@ -190,6 +208,12 @@
     </geometry>
     <material name="silver"/>
   </visual>
+  <collision>
+    <origin xyz="-0.233013 -0.1603 -0.776842" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/left_forearm_v2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
 </link>
 
 <link name="neck_v2_1">
@@ -464,11 +488,31 @@
   <child link="camera_1"/>
 </joint>
 
-<joint name="left_hand_palm" type="continuous">
+<joint name="left_wrist_pitch" type="revolute">
   <origin xyz="0.248 0.0265 0.02" rpy="0 0 0"/>
   <parent link="left_forearm_v2_1"/>
+  <child link="left_wrist_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+  <limit upper="1.57" lower="-1.57" effort="100" velocity="100"/>
+  <dynamics damping="5.0" friction="2.0"/>
+</joint>
+
+<joint name="left_wrist_yaw" type="revolute">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <parent link="left_wrist_1"/>
+  <child link="left_wrist_2"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit upper="1.57" lower="-1.57" effort="100" velocity="100"/>
+  <dynamics damping="5.0" friction="2.0"/>
+</joint>
+
+<joint name="left_hand_palm" type="revolute">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <parent link="left_wrist_2"/>
   <child link="left_hand_palm_1"/>
   <axis xyz="0.999999 -0.0 0.001396"/>
+  <limit upper="3.14" lower="-3.14" effort="100" velocity="100"/>
+  <dynamics damping="5.0" friction="2.0"/>
 </joint>
 
 <joint name="left_hand_finger" type="revolute">
@@ -479,11 +523,31 @@
   <limit upper="0.0" lower="-2.0" effort="100" velocity="100"/>
 </joint>
 
-<joint name="right_hand_palm" type="continuous">
+<joint name="right_wrist_pitch" type="revolute">
   <origin xyz="0.25 0.035 0.01" rpy="0 0 0"/>
   <parent link="right_forearm_v1_1"/>
+  <child link="right_wrist_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+  <limit upper="1.57" lower="-1.57" effort="100" velocity="100"/>
+  <dynamics damping="5.0" friction="2.0"/>
+</joint>
+
+<joint name="right_wrist_yaw" type="revolute">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <parent link="right_wrist_1"/>
+  <child link="right_wrist_2"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit upper="1.57" lower="-1.57" effort="100" velocity="100"/>
+  <dynamics damping="5.0" friction="2.0"/>
+</joint>
+
+<joint name="right_hand_palm" type="revolute">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <parent link="right_wrist_2"/>
   <child link="right_hand_palm_1"/>
   <axis xyz="0.999871 0.0 -0.016056"/>
+  <limit upper="3.14" lower="-3.14" effort="100" velocity="100"/>
+  <dynamics damping="5.0" friction="2.0"/>
 </joint>
 
 <joint name="right_hand_finger" type="revolute">
@@ -493,5 +557,63 @@
   <axis xyz="0.01466 0.0 0.999893"/>
   <limit upper="0.0" lower="-2.0" effort="100" velocity="100"/>
 </joint>
+
+<link name="left_wrist_1">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <mass value="0.1"/>
+    <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0" iyz="0" ixz="0"/>
+  </inertial>
+</link>
+
+<link name="left_wrist_2">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <mass value="0.1"/>
+    <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0" iyz="0" ixz="0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/this.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/this.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="right_wrist_1">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <mass value="0.1"/>
+    <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0" iyz="0" ixz="0"/>
+  </inertial>
+</link>
+
+<link name="right_wrist_2">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <mass value="0.1"/>
+    <inertia ixx="0.001" iyy="0.001" izz="0.001" ixy="0" iyz="0" ixz="0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/this.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/this.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
 
 </robot>
