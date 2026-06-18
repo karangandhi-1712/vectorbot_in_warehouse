@@ -22,9 +22,9 @@
     <material name="grey"/>
   </visual>
   <visual name="base_column_visual">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <origin xyz="0 0 -0.0605" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find vector_description)/meshes/base_column.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="file://$(find vector_description)/meshes/base_column.stl" scale="0.001 0.001 0.00125"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -69,6 +69,34 @@
       <mesh filename="file://$(find vector_description)/meshes/torso_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="dark_grey"/>
+  </visual>
+  <visual name="front_left_shoulder_cover">
+    <origin xyz="0.03828 0.191 0.071815" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/shoulder_cover.stl" scale="0.00025 0.00025 0.00025"/>
+    </geometry>
+    <material name="light_grey"/>
+  </visual>
+  <visual name="back_left_shoulder_cover">
+    <origin xyz="0.03828 0.191 0.071815" rpy="0 0 3.14159265"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/shoulder_cover.stl" scale="0.00025 0.00025 0.00025"/>
+    </geometry>
+    <material name="light_grey"/>
+  </visual>
+  <visual name="front_right_shoulder_cover">
+    <origin xyz="0.03828 -0.186642 0.071815" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/shoulder_cover.stl" scale="0.00025 0.00025 0.00025"/>
+    </geometry>
+    <material name="light_grey"/>
+  </visual>
+  <visual name="back_right_shoulder_cover">
+    <origin xyz="0.03828 -0.186642 0.071815" rpy="0 0 3.14159265"/>
+    <geometry>
+      <mesh filename="file://$(find vector_description)/meshes/shoulder_cover.stl" scale="0.00025 0.00025 0.00025"/>
+    </geometry>
+    <material name="light_grey"/>
   </visual>
 </link>
 
