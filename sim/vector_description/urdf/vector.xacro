@@ -24,7 +24,7 @@
   <visual name="base_column_visual">
     <origin xyz="0 0 -0.0605" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="file://$(find vector_description)/meshes/base_column.stl" scale="0.001 0.001 0.00125"/>
+      <mesh filename="file://$(find vector_description)/meshes/base_column.stl" scale="0.0015 0.0015 0.00125"/>
     </geometry>
     <material name="black"/>
   </visual>
@@ -259,6 +259,42 @@
     <material name="silver"/>
   </visual>
 </link>
+
+<!-- INSERT THIS FOR NEW GAZEBO ENGINE OVERRIDES -->
+<gazebo reference="head_v1_1">
+  <visual>
+    <material>
+      <ambient>1 1 1 0</ambient>
+      <diffuse>1 1 1 0</diffuse>
+      <specular>0 0 0 0</specular>
+      <emissive>0 0 0 0</emissive>
+    </material>
+  </visual>
+</gazebo>
+
+<link name="livox_mid360_link">
+  <inertial>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <mass value="0.265"/>
+    <inertia ixx="0.0002" iyy="0.0002" izz="0.0003" ixy="0" iyz="0" ixz="0"/>
+  </inertial>
+  <visual name="livox_mid360_visual">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <cylinder radius="0.053" length="0.052"/>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+</link>
+
+<joint name="livox_mid360_joint" type="fixed">
+  <!-- Mounted on top of the base column, just below the slider mechanism.
+       slider_1 origin is at (0.131878, 0.005317, 1.244) from base_link,
+       so we offset back to center the LiDAR on the column axis. -->
+  <origin xyz="-0.131878 -0.005317 -0.01" rpy="0 0 0"/>
+  <parent link="slider_1"/>
+  <child link="livox_mid360_link"/>
+</joint>
 
 <link name="right_wheel_1">
   <inertial>

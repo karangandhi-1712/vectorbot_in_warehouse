@@ -43,16 +43,25 @@
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
 
-# ── SPINE LIDAR (top of column, high vantage 360° scan) ───────────────
-- ros_topic_name: "/spine_lidar/scan"
-  gz_topic_name: "/spine_lidar/scan"
+# ── LIVOX MID-360 LiDAR (top of base column, 360° 3D scan) ────────────
+# LaserScan (2D slice, useful for nav2 costmap)
+- ros_topic_name: "/livox_mid360/scan"
+  gz_topic_name: "/livox_mid360"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
   direction: GZ_TO_ROS
 
-# ── BASE LIDAR (top of base, in front of spine, near-ground 360° scan) ─
-- ros_topic_name: "/base_lidar/scan"
-  gz_topic_name: "/base_lidar/scan"
-  ros_type_name: "sensor_msgs/msg/LaserScan"
-  gz_type_name: "gz.msgs.LaserScan"
+# PointCloud2 (full 3D point cloud)
+- ros_topic_name: "/livox_mid360/points"
+  gz_topic_name: "/livox_mid360/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
+
+# Built-in IMU (200 Hz)
+- ros_topic_name: "/livox_mid360/imu"
+  gz_topic_name: "/livox_mid360/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+

@@ -126,5 +126,60 @@
 </gazebo>
 
 
+<gazebo reference="livox_mid360_link">
+  <self_collide>false</self_collide>
+  <!-- ── LIVOX MID-360 LiDAR (gpu_lidar approximation) ──────────────────
+       Real specs: 360° H-FOV, -7° to +52° V-FOV (59°), 40 m range,
+       200k pts/s, 0.1 m blind zone, built-in IMU at 200 Hz.
+       Gazebo Harmonic doesn't support the Livox non-repetitive scan
+       pattern, so we use a standard gpu_lidar with matched FOV/range.
+       Horizontal: 720 samples × 360° = 0.5° angular resolution.
+       Vertical:    16 samples ×  59° ≈ 3.7° angular resolution.
+       ──────────────────────────────────────────────────────────────────── -->
+  <sensor name="livox_mid360" type="gpu_ray">
+    <pose>0 0 0 0 0 0</pose>
+    <visualize>true</visualize>
+    <update_rate>10</update_rate>
+    <always_on>true</always_on>
+    <ray>
+      <scan>
+        <horizontal>
+          <samples>720</samples>
+          <resolution>1</resolution>
+          <min_angle>-3.141592653589793</min_angle>
+          <max_angle>3.141592653589793</max_angle>
+        </horizontal>
+        <vertical>
+          <samples>16</samples>
+          <resolution>1</resolution>
+          <min_angle>-0.122173</min_angle>   <!-- -7° -->
+          <max_angle>0.907571</max_angle>    <!-- +52° -->
+        </vertical>
+      </scan>
+      <range>
+        <min>0.1</min>
+        <max>500</max>
+        <resolution>0.003</resolution>
+      </range>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>0.01</stddev>
+      </noise>
+    </ray>
+    <topic>livox_mid360</topic>
+    <gz_frame_id>livox_mid360_link</gz_frame_id>
+  </sensor>
+  <!-- Built-in IMU (Mid-360 has a 3-axis accel/gyro at 200 Hz) -->
+  <sensor name="livox_mid360_imu" type="imu">
+    <pose>0 0 0 0 0 0</pose>
+    <update_rate>200</update_rate>
+    <always_on>true</always_on>
+    <topic>livox_mid360/imu</topic>
+    <gz_frame_id>livox_mid360_link</gz_frame_id>
+  </sensor>
+</gazebo>
+
+
 
 </robot>

@@ -36,8 +36,13 @@ ament_target_dependencies(torso_safety_guard rclcpp std_msgs sensor_msgs)
 add_executable(torso_teleop_bridge src/torso_teleop_bridge.cpp)
 ament_target_dependencies(torso_teleop_bridge rclcpp geometry_msgs std_msgs)
 
+# Livox Mid-360 LiDAR diagnostic monitor — logs scan stats, point cloud
+# density, IMU data, and obstacle proximity warnings.
+add_executable(lidar_monitor src/lidar_monitor.cpp)
+ament_target_dependencies(lidar_monitor rclcpp sensor_msgs std_msgs)
+
 install(
-  TARGETS twist_to_stamped torso_position_pid torso_safety_guard torso_teleop_bridge
+  TARGETS twist_to_stamped torso_position_pid torso_safety_guard torso_teleop_bridge lidar_monitor
   DESTINATION lib/${PROJECT_NAME}
 )
 

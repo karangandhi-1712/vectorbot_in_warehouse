@@ -277,6 +277,35 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
+    # ── Livox Mid-360 LiDAR monitor ────────────────────────────────────
+    # Subscribes to /livox_mid360/scan, /points, /imu and publishes
+    # diagnostics JSON + periodic console logs with range/coverage/IMU stats.
+    lidar_monitor = Node(
+        package="vector_gazebo_sim",
+        executable="lidar_monitor",
+        name="lidar_monitor",
+        parameters=[{
+            "use_sim_time":       True,
+            "log_rate_hz":        1.0,
+            "warn_min_range_m":   0.3,
+            "warn_no_data_sec":   3.0,
+        }],
+        output="screen",
+    )
+
+    # Static TF for Livox Mid-360 (same reason as camera_link_tf above —
+    # ensures the transform is always in the TF buffer over zenoh/DDS).
+    # Parented to slider_1 (top of base column), offset to column center.
+    lidar_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="livox_mid360_static_tf",
+        arguments=["-0.131878", "-0.005317", "-0.01", "0", "0", "0",
+                   "slider_1", "livox_mid360_link"],
+        parameters=[{"use_sim_time": True}],
+        output="log",
+    )
+
     nodes = [
         gz_sim, rsp, bridge, spawn_robot, delayed_spawners,
         torso_safety,
@@ -284,6 +313,8 @@ def launch_setup(context, *args, **kwargs):
         torso_teleop,
         camera_link_tf,
         camera_optical_tf,
+        lidar_monitor,
+        lidar_tf,
         make_bridge("/cmd_vel_final", "twist_bridge_final"),
     ]
 
