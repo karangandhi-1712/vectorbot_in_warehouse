@@ -29,24 +29,24 @@ controller_manager:
 # uses sensible defaults.
 #
 # wheel_diameter_mm = 150  →  radius = 0.075
-# wheel_separation: must MATCH the URDF property of the same name
-# (currently 0.455m = 0.50m end-to-end minus wheel_thickness). Keeping
-# them out of sync produces odometry that drifts in proportion to the
-# ratio difference whenever the robot turns.
+# wheel_separation: must MATCH the URDF wheel joint center spacing.
+# Wheel joint origins are at y = ±0.203 m, so the true center-to-center
+# separation is 0.406 m. A mismatch here produces odometry drift
+# proportional to the separation ratio whenever the robot turns.
 # ──────────────────────────────────────────────────────────────────────
 base_controller:
   ros__parameters:
     use_sim_time: true
     left_wheel_names: ["left_wheel"]
     right_wheel_names: ["right_wheel"]
-    wheel_separation: 0.455
+    wheel_separation: 0.406
     wheel_radius: 0.075
 
     odom_frame_id: odom
     # base_frame_id must match the URDF root link.
     # This URDF uses base_link as root (no base_footprint link exists).
     base_frame_id: base_link
-    publish_rate: 20.0
+    publish_rate: 10.0
     open_loop: false
     enable_odom_tf: true
 

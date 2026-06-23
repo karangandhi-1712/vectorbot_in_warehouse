@@ -234,7 +234,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # ── cmd_vel routing via C++ bridge ────────────────────────────────
-    # Static TF for the two fixed camera joints.
+    # Static TF for the fixed camera joints.
     # robot_state_publisher sends these on /tf_static (latched, once).
     # Over zenoh that one-shot broadcast is occasionally missed, causing
     # "Could not transform from camera_optical_frame to base_link" errors
@@ -244,8 +244,8 @@ def launch_setup(context, *args, **kwargs):
         package="tf2_ros",
         executable="static_transform_publisher",
         name="camera_link_static_tf",
-        arguments=["0.10", "0", "0.08", "0", "0", "0",
-                   "head_link", "camera_link"],
+        arguments=["0.045", "0.00125", "0.06171", "0", "0", "0",
+                   "head_v1_1", "camera_1"],
         parameters=[{"use_sim_time": True}],
         output="log",
     )
@@ -254,7 +254,7 @@ def launch_setup(context, *args, **kwargs):
         executable="static_transform_publisher",
         name="camera_optical_static_tf",
         arguments=["0", "0", "0", "-1.5708", "0", "-1.5708",
-                   "camera_link", "camera_optical_frame"],
+                   "camera_1", "camera_optical_frame"],
         parameters=[{"use_sim_time": True}],
         output="log",
     )
