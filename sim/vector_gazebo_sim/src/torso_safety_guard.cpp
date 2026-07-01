@@ -121,28 +121,53 @@ public:
           if (msg->name[i] == "left_forearm")    l_elbow2_    = msg->position[i];
           if (msg->name[i] == "right_shoulder")  r_shoulder1_ = msg->position[i];
           if (msg->name[i] == "right_forearn")   r_elbow2_    = msg->position[i];
+          if (msg->name[i] == "slider_z_axis")   torso_pos_   = msg->position[i];
         }
         have_state_ = true;
       });
 
-    // ── Startup auto-raise ──
-    // The arms hang down by default. With the torso at min height (joint=0),
+    // ── Startup auto-raise (repeating until confirmed) ──
+    // The arms hang down by default. With the torso at min height,
     // the arm tips dip below the base top. Auto-raise the torso to its
-    // max position 1.5 seconds after launch (gives controllers time to
-    // become active), so the arms don't immediately collide with the base.
-    // The user can then send their own commands; the safety guard will
-    // permit/block them based on current arm pose.
+    // max position so the arms don't collide with the base.
+    //
+    // We start at 3s (after the 5s delayed controller spawners have had
+    // a chance to activate) and KEEP re-publishing every 500ms until
+    // /joint_states confirms the torso has actually started moving.
+    // This eliminates the race condition where a single one-shot message
+    // could be lost before the effort controller or PID were ready.
     startup_raise_timer_ = create_wall_timer(
-      std::chrono::milliseconds(1500),
+      std::chrono::milliseconds(500),
       [this]() {
-        if (sent_startup_) return;
-        sent_startup_ = true;
+        startup_ticks_++;
+        // Wait at least 6 ticks (3 seconds) for controllers to spawn
+        if (startup_ticks_ < 6) return;
+
+        // Check if torso has already responded (position moving up)
+        double torso_pos = 0.0;
+        {
+          std::lock_guard<std::mutex> lk(state_mutex_);
+          torso_pos = torso_pos_;
+        }
+
+        // Stop once the torso is above -0.3 (it has started moving)
+        // or after 60 attempts (30s) to avoid infinite retries
+        if ((have_state_ && torso_pos > -0.3) || startup_ticks_ > 120) {
+          if (!sent_startup_) {
+            sent_startup_ = true;
+            RCLCPP_INFO(get_logger(),
+              "Startup auto-raise complete: torso at %.3f m", torso_pos);
+          }
+          return;
+        }
+
+        double target = get_parameter("max_torso_z").as_double();
         std_msgs::msg::Float64MultiArray msg;
-        msg.data = {get_parameter("max_torso_z").as_double()};
+        msg.data = {target};
         safe_pub_->publish(msg);
-        RCLCPP_INFO(get_logger(),
-          "Startup auto-raise: torso → %.3f m (keeps arms clear of base)",
-          msg.data[0]);
+        RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 2000,
+          "Startup auto-raise: publishing torso → %.3f m (tick %d, current pos=%.3f)",
+          target, startup_ticks_, torso_pos);
       });
 
     RCLCPP_INFO(get_logger(),
@@ -207,6 +232,7 @@ private:
   mutable std::mutex state_mutex_;
   double l_shoulder1_{0.0}, l_elbow2_{0.0};
   double r_shoulder1_{0.0}, r_elbow2_{0.0};
+  double torso_pos_{-1.0};  // track torso position for startup confirmation
   bool   have_state_{false};
 
   rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr cmd_sub_;
@@ -215,6 +241,7 @@ private:
   rclcpp::TimerBase::SharedPtr                                      startup_raise_timer_;
   OnSetParametersCallbackHandle::SharedPtr                          param_cb_;
   bool sent_startup_{false};
+  int  startup_ticks_{0};
 };
 
 int main(int argc, char ** argv)

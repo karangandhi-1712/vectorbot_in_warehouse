@@ -70,6 +70,15 @@ public:
 
     joint_name_ = get_parameter("joint_name").as_string();
 
+    // Start with torso raised — the arms hang down by default and would
+    // collide with the base if the torso started at 0.0.
+    // Both setpoint_ and target_ start at max so the PID immediately
+    // applies gravity feedforward + position hold as soon as
+    // joint_states arrive, regardless of whether the safety guard's
+    // startup auto-raise message was received.
+    target_setpoint_ = max_pos_;
+    setpoint_ = max_pos_;
+
     // Parameter callback — re-snapshot when any param changes
     param_cb_handle_ = add_on_set_parameters_callback(
       [this](const std::vector<rclcpp::Parameter>& /*params*/) {
