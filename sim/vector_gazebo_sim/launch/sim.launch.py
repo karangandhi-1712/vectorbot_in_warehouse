@@ -293,6 +293,27 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
+    # ── Joint torque feedback monitor ──────────────────────────────────
+    # Reads effort field from /joint_states, publishes JSON on:
+    #   /torque_monitor/joint_efforts   — per-joint effort/pos/vel data
+    #   /torque_monitor/diagnostics     — summary stats, anomaly flags
+    # Optionally logs CSV for offline analytics (enable_csv_log param).
+    # Any external plugin can subscribe to these topics for real-time data.
+    torque_monitor = Node(
+        package="vector_gazebo_sim",
+        executable="torque_monitor",
+        name="torque_monitor",
+        parameters=[{
+            "use_sim_time":           True,
+            "log_rate_hz":            2.0,
+            "publish_rate_hz":        10.0,
+            "enable_csv_log":         False,
+            "csv_path":               "/tmp/vector_torque_log.csv",
+            "warn_effort_threshold":  50.0,
+        }],
+        output="screen",
+    )
+
     # Static TF for Livox Mid-360 (same reason as camera_link_tf above —
     # ensures the transform is always in the TF buffer over zenoh/DDS).
     # Parented to slider_1 (top of base column), offset to column center.
@@ -314,6 +335,7 @@ def launch_setup(context, *args, **kwargs):
         camera_link_tf,
         camera_optical_tf,
         lidar_monitor,
+        torque_monitor,
         lidar_tf,
         make_bridge("/cmd_vel_final", "twist_bridge_final"),
     ]

@@ -41,8 +41,14 @@ ament_target_dependencies(torso_teleop_bridge rclcpp geometry_msgs std_msgs)
 add_executable(lidar_monitor src/lidar_monitor.cpp)
 ament_target_dependencies(lidar_monitor rclcpp sensor_msgs std_msgs)
 
+# Joint torque feedback monitor — reads effort from /joint_states,
+# publishes JSON on /torque_monitor/* topics, optionally logs CSV.
+# See src/torque_monitor.cpp for full architecture.
+add_executable(torque_monitor src/torque_monitor.cpp)
+ament_target_dependencies(torque_monitor rclcpp std_msgs sensor_msgs)
+
 install(
-  TARGETS twist_to_stamped torso_position_pid torso_safety_guard torso_teleop_bridge lidar_monitor
+  TARGETS twist_to_stamped torso_position_pid torso_safety_guard torso_teleop_bridge lidar_monitor torque_monitor
   DESTINATION lib/${PROJECT_NAME}
 )
 
