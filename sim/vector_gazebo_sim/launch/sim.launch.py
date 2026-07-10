@@ -17,6 +17,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
+    ExecuteProcess,
     IncludeLaunchDescription,
     OpaqueFunction,
     TimerAction,
@@ -118,15 +119,15 @@ def launch_setup(context, *args, **kwargs):
 
     # ── Gazebo Harmonic ──────────────────────────────────────────────
     world_path = os.path.join(gazebo_pkg_share, "worlds", world_file)
-    gz_args = f"-r {world_path}"
+    gz_args = f"-v 4 -r {world_path}"
     if headless:
-        gz_args = f"-r -s --headless-rendering {world_path}"
+        gz_args = f"-v 4 -r -s --headless-rendering {world_path}"
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([FindPackageShare("ros_gz_sim"),
                                   "launch", "gz_sim.launch.py"])
         ),
-        launch_arguments={"gz_args": gz_args}.items(),
+        launch_arguments={"gz_args": gz_args, "gz_version": "8"}.items(),
     )
 
     rsp = Node(
@@ -136,12 +137,15 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
-    spawn_robot = Node(
-        package="ros_gz_sim",
-        executable="create",
-        arguments=["-name", "vector_robot", "-topic", "/robot_description",
-                   "-z", "0.005"],
-        output="screen",
+    spawn_robot = ExecuteProcess(
+        cmd=[
+            '/opt/ros/jazzy/lib/ros_gz_sim/create',
+            '-name', 'vector_robot',
+            '-topic', '/robot_description',
+            '-z', '0.005',
+        ],
+        additional_env={'ROS_DOMAIN_ID': os.environ.get('ROS_DOMAIN_ID', '0')},
+        output='screen',
     )
 
     bridge_config = os.path.join(gazebo_pkg_share, "config", "bridge.yaml")
@@ -169,11 +173,12 @@ def launch_setup(context, *args, **kwargs):
         period=5.0,
         actions=[
             make_spawner("joint_state_broadcaster"),
-            make_spawner("base_controller"),
-            make_spawner("joint_trajectory_controller", ["--param-file", jtc_override_path]),
-            make_spawner("torso_effort_controller"),
+            # make_spawner("base_controller"),
+            # make_spawner("joint_trajectory_controller", ["--param-file", jtc_override_path]),
+            # make_spawner("torso_effort_controller"),
         ],
     )
+
 
     # ── Torso position PID (software loop, outputs effort) ────────────
     # Architecture (see src/torso_position_pid.cpp for full explanation):
