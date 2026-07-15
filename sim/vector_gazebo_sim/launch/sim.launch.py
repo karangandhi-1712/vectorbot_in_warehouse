@@ -30,13 +30,11 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def resolve_active_joints():
-    """The 14 arm + neck joints the JTC controls in simulation."""
+    """The active joints the JTC controls in simulation."""
     return [
-        "left_shoulder_holder", "left_shoulder", "left_bicep", "left_forearm",
-        "left_wrist_pitch", "left_wrist_yaw", "left_hand_palm",
-        "right_shoulder_holder", "right_shoulder", "right_bicep", "right_forearn",
-        "right_wrist_pitch", "right_wrist_yaw", "right_hand_palm",
-        "neck", "head",
+        "shoulder_link_1", "left_shoulder", "left_bicep", "left_forearm",
+        "right_shoulder_1", "right_shoulder_2", "right_bicep", "right_forearm",
+        "right_wrist_1", "right_wrist_2",
     ]
 
 
@@ -142,7 +140,8 @@ def launch_setup(context, *args, **kwargs):
             '/opt/ros/jazzy/lib/ros_gz_sim/create',
             '-name', 'vector_robot',
             '-topic', '/robot_description',
-            '-z', '0.005',
+            '-z', '0.170',
+            '-Y', '-1.5708',   # Rotate -90° so URDF Y+ points forward (drive wheels become left/right)
         ],
         additional_env={'ROS_DOMAIN_ID': os.environ.get('ROS_DOMAIN_ID', '0')},
         output='screen',
@@ -173,9 +172,9 @@ def launch_setup(context, *args, **kwargs):
         period=5.0,
         actions=[
             make_spawner("joint_state_broadcaster"),
-            # make_spawner("base_controller"),
-            # make_spawner("joint_trajectory_controller", ["--param-file", jtc_override_path]),
-            # make_spawner("torso_effort_controller"),
+            make_spawner("base_controller"),
+            make_spawner("joint_trajectory_controller", ["--param-file", jtc_override_path]),
+            make_spawner("torso_effort_controller"),
         ],
     )
 
@@ -188,9 +187,9 @@ def launch_setup(context, *args, **kwargs):
     #     → effort_controllers/JointGroupEffortController
     #     → torso_z_joint effort interface in Gazebo
     #
-    # Gains derived from physics (m=13kg, ωn=4 rad/s, ζ=1.0):
-    #   kp = m·ωn² = 208      kd = 2·ζ·m·ωn = 104
-    # gravity_feedforward_n = m·g = 127 N (cancels weight)
+    # Gains derived from physics (m=31.62kg, ωn=4 rad/s, ζ=1.0):
+    #   kp = m·ωn² = 506.0      kd = 2·ζ·m·ωn = 253.0
+    # gravity_feedforward_n = m·g = 310.2 N (cancels weight)
     # ki = 0 (FF holds steady state, I term causes windup on vertical joints)
     #
     # Live tuning: ros2 param set /torso_position_pid <param> <value>
@@ -200,11 +199,11 @@ def launch_setup(context, *args, **kwargs):
         name="torso_position_pid",
         parameters=[{
             "use_sim_time":            True,
-            "joint_name":              "slider_z_axis",
-            "kp":                      208.0,
+            "joint_name":              "torso_joint",
+            "kp":                      506.0,
             "ki":                      0.0,
-            "kd":                      104.0,
-            "gravity_feedforward_n":   127.0,
+            "kd":                      253.0,
+            "gravity_feedforward_n":   310.2,
             "max_effort":              2000.0,
             "min_effort":             -2000.0,
             "min_position":            -0.6,
@@ -249,8 +248,8 @@ def launch_setup(context, *args, **kwargs):
         package="tf2_ros",
         executable="static_transform_publisher",
         name="camera_link_static_tf",
-        arguments=["0.045", "0.00125", "0.06171", "0", "0", "0",
-                   "head_v1_1", "camera_1"],
+        arguments=["-0.0702", "0.0605", "0.184373", "0", "0", "0",
+                   "torso_link", "camera_1"],
         parameters=[{"use_sim_time": True}],
         output="log",
     )
@@ -326,8 +325,8 @@ def launch_setup(context, *args, **kwargs):
         package="tf2_ros",
         executable="static_transform_publisher",
         name="livox_mid360_static_tf",
-        arguments=["-0.131878", "-0.005317", "-0.01", "0", "0", "0",
-                   "slider_1", "livox_mid360_link"],
+        arguments=["-0.083", "0.06", "0.94", "0", "0", "0",
+                   "base_link", "livox_mid360_link"],
         parameters=[{"use_sim_time": True}],
         output="log",
     )

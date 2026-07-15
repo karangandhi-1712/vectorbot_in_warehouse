@@ -50,16 +50,15 @@ class TorsoPositionPid : public rclcpp::Node
 public:
   TorsoPositionPid() : Node("torso_position_pid")
   {
-    // ── Tunable parameters (all live-updatable via ros2 param set) ──
-    // Defaults derived from physics: m=13kg, ωn=4 rad/s, ζ=1.0
-    declare_parameter<double>("kp",                      208.0);
+    // Defaults derived from physics: m=31.62kg, ωn=4 rad/s, ζ=1.0
+    declare_parameter<double>("kp",                      506.0);
     declare_parameter<double>("ki",                      0.0);
-    declare_parameter<double>("kd",                      104.0);
-    declare_parameter<double>("gravity_feedforward_n",   127.0);   // 13 kg × 9.81
+    declare_parameter<double>("kd",                      253.0);
+    declare_parameter<double>("gravity_feedforward_n",   310.2);   // 31.62 kg × 9.81
     declare_parameter<double>("max_effort",              2000.0);
     declare_parameter<double>("min_effort",             -2000.0);
-    declare_parameter<double>("min_position",            0.0);
-    declare_parameter<double>("max_position",            0.51);
+    declare_parameter<double>("min_position",           -0.6);
+    declare_parameter<double>("max_position",            0.39);
     declare_parameter<double>("integral_clamp",          100.0);
     declare_parameter<double>("setpoint_slew_m_per_s",   0.15);    // matches motor max vel
     declare_parameter<double>("deadband_m",              0.001);   // 1 mm — stop adjusting inside this
@@ -232,10 +231,10 @@ private:
   }
 
   // Cached parameter values (snapshotted in refresh_params)
-  double kp_{208.0}, ki_{0.0}, kd_{104.0};
-  double gravity_ff_{127.0};
+  double kp_{506.0}, ki_{0.0}, kd_{253.0};
+  double gravity_ff_{310.2};
   double max_effort_{2000.0}, min_effort_{-2000.0};
-  double min_pos_{0.0}, max_pos_{0.51};
+  double min_pos_{-0.6}, max_pos_{0.39};
   double i_clamp_{100.0}, slew_rate_{0.15}, deadband_{0.001};
 
   std::string joint_name_;

@@ -37,9 +37,9 @@ controller_manager:
 base_controller:
   ros__parameters:
     use_sim_time: true
-    left_wheel_names: ["left_wheel"]
-    right_wheel_names: ["right_wheel"]
-    wheel_separation: 0.406
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+    wheel_separation: 0.437   # X-axis distance between gearboxes: 0.287568-(-0.149164)=0.437m
     wheel_radius: 0.075
 
     odom_frame_id: odom
@@ -66,7 +66,7 @@ base_controller:
 torso_effort_controller:
   ros__parameters:
     use_sim_time: true
-    joints: [slider_z_axis]
+    joints: [torso_joint]
 # ──────────────────────────────────────────────────────────────────────
 # JTC — partial joint goals enabled so the OS arm_manager can publish
 # only the 8 robstride joints without listing the dsservo wrist joints.
@@ -74,6 +74,17 @@ torso_effort_controller:
 joint_trajectory_controller:
   ros__parameters:
     use_sim_time: true
+    joints:
+      - shoulder_link_1
+      - left_shoulder
+      - left_bicep
+      - left_forearm
+      - right_shoulder_1
+      - right_shoulder_2
+      - right_bicep
+      - right_forearm
+      - right_wrist_1
+      - right_wrist_2
     command_interfaces: [position]
     state_interfaces:   [position, velocity]
     allow_partial_joints_goal: true
