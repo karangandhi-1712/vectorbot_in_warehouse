@@ -21,26 +21,18 @@ Base & Torso:
   x     : Stop Base & Torso
 
 Left Arm:
-  r / f : left_shoulder_holder (up/down)
+  r / f : shoulder_link_1 (up/down)
   t / g : left_shoulder (up/down)
   y / h : left_bicep (up/down)
   u / j : left_forearm (up/down)
-  1 / 2 : left_wrist_pitch (up/down)
-  3 / 4 : left_wrist_yaw (left/right)
-  5 / 6 : left_hand_palm (roll)
 
 Right Arm:
-  i / k : right_shoulder_holder (up/down)
-  o / l : right_shoulder (up/down)
+  i / k : right_shoulder_1 (up/down)
+  o / l : right_shoulder_2 (up/down)
   p / ; : right_bicep (up/down)
-  [ / ' : right_forearn (up/down)
-  7 / 8 : right_wrist_pitch (up/down)
-  9 / 0 : right_wrist_yaw (left/right)
-  - / = : right_hand_palm (roll)
-
-Neck & Head:
-  z / c : neck (up/down)
-  v / b : head (up/down)
+  [ / ' : right_forearm (up/down)
+  7 / 8 : right_wrist_1 (up/down)
+  9 / 0 : right_wrist_2 (up/down)
 
 SPACE to reset all arm/head joints to 0.
 CTRL-C to quit.
@@ -68,16 +60,8 @@ arm_bindings = {
     'p': (6, 1), ';': (6, -1),
     '[': (7, 1), "'": (7, -1),
     
-    'z': (8, 1), 'c': (8, -1),
-    'v': (9, 1), 'b': (9, -1),
-
-    '1': (10, 1), '2': (10, -1),
-    '3': (11, 1), '4': (11, -1),
-    '5': (12, 1), '6': (12, -1),
-    
-    '7': (13, 1), '8': (13, -1),
-    '9': (14, 1), '0': (14, -1),
-    '-': (15, 1), '=': (15, -1),
+    '7': (8, 1), '8': (8, -1),
+    '9': (9, 1), '0': (9, -1),
 }
 
 class UniversalTeleop(Node):
@@ -87,11 +71,9 @@ class UniversalTeleop(Node):
         self.base_pub_ = self.create_publisher(Twist, '/cmd_vel', 10)
         
         self.joints = [
-            "left_shoulder_holder", "left_shoulder", "left_bicep", "left_forearm",
-            "right_shoulder_holder", "right_shoulder", "right_bicep", "right_forearn",
-            "neck", "head",
-            "left_wrist_pitch", "left_wrist_yaw", "left_hand_palm",
-            "right_wrist_pitch", "right_wrist_yaw", "right_hand_palm"
+            "shoulder_link_1", "left_shoulder", "left_bicep", "left_forearm",
+            "right_shoulder_1", "right_shoulder_2", "right_bicep", "right_forearm",
+            "right_wrist_1", "right_wrist_2"
         ]
         
         self.positions = [0.0] * len(self.joints)
