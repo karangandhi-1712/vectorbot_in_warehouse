@@ -5,22 +5,39 @@
       <plugin>gz_ros2_control/GazeboSimSystem</plugin>
     </hardware>
 
-    <!-- Torso -->
-    <joint name="slider_z_axis">
+    <joint name="left_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="right_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="torso_joint">
       <command_interface name="effort"/>
-      <state_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.39</param>
+      </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
 
-    <!-- Left Arm -->
-    <joint name="left_shoulder_holder">
+    <joint name="shoulder_link_1">
       <command_interface name="position"/>
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
+
     <joint name="left_shoulder">
       <command_interface name="position"/>
       <state_interface name="position">
@@ -28,6 +45,7 @@
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
+
     <joint name="left_bicep">
       <command_interface name="position"/>
       <state_interface name="position">
@@ -35,6 +53,7 @@
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
+
     <joint name="left_forearm">
       <command_interface name="position"/>
       <state_interface name="position">
@@ -43,21 +62,22 @@
       <state_interface name="velocity"/>
     </joint>
 
-    <!-- Right Arm -->
-    <joint name="right_shoulder_holder">
+    <joint name="right_shoulder_1">
       <command_interface name="position"/>
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
-    <joint name="right_shoulder">
+
+    <joint name="right_shoulder_2">
       <command_interface name="position"/>
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
+
     <joint name="right_bicep">
       <command_interface name="position"/>
       <state_interface name="position">
@@ -65,7 +85,8 @@
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
-    <joint name="right_forearn">
+
+    <joint name="right_forearm">
       <command_interface name="position"/>
       <state_interface name="position">
         <param name="initial_value">0.0</param>
@@ -73,15 +94,7 @@
       <state_interface name="velocity"/>
     </joint>
 
-    <!-- Neck and Head -->
-    <joint name="neck">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="head">
+    <joint name="right_wrist_1">
       <command_interface name="position"/>
       <state_interface name="position">
         <param name="initial_value">0.0</param>
@@ -89,77 +102,12 @@
       <state_interface name="velocity"/>
     </joint>
 
-    <!-- Wrists -->
-    <joint name="left_wrist_pitch">
+    <joint name="right_wrist_2">
       <command_interface name="position"/>
       <state_interface name="position">
         <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity"/>
     </joint>
-    <joint name="left_wrist_yaw">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="right_wrist_pitch">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="right_wrist_yaw">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-
-    <!-- Hands -->
-    <joint name="left_hand_palm">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="left_hand_finger">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="right_hand_palm">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="right_hand_finger">
-      <command_interface name="position"/>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-    </joint>
-
-    <!-- Wheels -->
-    <joint name="right_wheel">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <joint name="left_wheel">
-      <command_interface name="velocity"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-    </joint>
-
   </ros2_control>
 </robot>

@@ -73,15 +73,59 @@
 </gazebo>
 
 <!-- Wheels: high friction for traction, no self-collide -->
-<gazebo reference="right_wheel_1">
+<gazebo reference="right_wheel_link">
   <mu1>1.5</mu1>
   <mu2>1.5</mu2>
   <self_collide>false</self_collide>
 </gazebo>
 
-<gazebo reference="left_wheel_1">
+<gazebo reference="left_wheel_link">
   <mu1>1.5</mu1>
   <mu2>1.5</mu2>
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="torso_link">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="shoulder_link_1_link">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="shoulder_link_2">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="elbow_link_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="elbow_link_2">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_shoulder_link_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_shoulder_link_2">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_elbow_link_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="right_elbow_link_2">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="wrist_link_1">
+  <self_collide>false</self_collide>
+</gazebo>
+
+<gazebo reference="ee_link">
   <self_collide>false</self_collide>
 </gazebo>
 
