@@ -183,7 +183,7 @@
   <sensor name="livox_mid360" type="gpu_ray">
     <pose>0 0 0 0 0 0</pose>
     <visualize>true</visualize>
-    <update_rate>0.1</update_rate>
+    <update_rate>5.0</update_rate>
     <always_on>true</always_on>
     <ray>
       <scan>

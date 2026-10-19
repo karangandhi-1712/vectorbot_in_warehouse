@@ -4837,6 +4837,20 @@
     </joint>
 
     <!-- Caster wheel - Part 1<3> in Basebottom subassembly (Onshape), Y=-0.224 side -->
+    <link name="camera_1" />
+    <joint name="camera_mount_fixed" type="fixed">
+        <parent link="torso_link" />
+        <child link="camera_1" />
+        <origin xyz="-0.0702 0.0605 0.184373" rpy="0 0 0" />
+    </joint>
+
+    <link name="livox_mid360_link" />
+    <joint name="livox_mid360_mount_fixed" type="fixed">
+        <parent link="base_link" />
+        <child link="livox_mid360_link" />
+        <origin xyz="-0.083 0.06 0.94" rpy="0 0 0" />
+    </joint>
+
     <link name="caster_link">
         <inertial>
             <mass value="0.5" />
