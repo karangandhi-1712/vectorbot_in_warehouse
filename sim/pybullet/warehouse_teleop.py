@@ -74,17 +74,21 @@ for i in range(p.getNumJoints(robot_id)):
     joint_names[name] = i
     print(f"{i}: {name}")
 
-# Wheel joints
-left_wheel = 15
-right_wheel = 14
+# Wheel joints in this URDF are revolute_1 and revolute_2.
+left_wheel = joint_names.get("revolute_1")
+right_wheel = joint_names.get("revolute_2")
+if left_wheel is None or right_wheel is None:
+    raise RuntimeError(
+        f"Could not find wheel joints. Available joints: {sorted(joint_names)}"
+    )
 
 # Key mappings
 wheel_velocity = 6.0
 key_map = {
-    ',': (-wheel_velocity, -wheel_velocity),     # forward
-    'i': (wheel_velocity, wheel_velocity),   # backward
-    'l': (wheel_velocity, -wheel_velocity),    # turn left
-    'j': (-wheel_velocity, wheel_velocity),    # turn right
+    ',': (wheel_velocity, wheel_velocity),     # forward
+    'i': (-wheel_velocity, -wheel_velocity),   # backward
+    'l': (-wheel_velocity, wheel_velocity),    # turn left
+    'j': (wheel_velocity, -wheel_velocity),    # turn right
     'k': (0.0, 0.0)                             # stop
 }
 

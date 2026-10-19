@@ -1,0 +1,86 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Plane: XY
+      Reference Frame: <Fixed Frame>
+      Cell Size: 1
+      Plane Cell Count: 20
+      Color: 160; 160; 164
+      Alpha: 0.5
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Enabled: true
+      Description Source: Topic
+      Description Topic: /robot_description
+      Visual Enabled: true
+      Collision Enabled: false
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+      Frame Timeout: 15
+      Show Axes: false
+      Show Names: false
+    - Class: rviz_default_plugins/Image
+      Name: Head Camera Image
+      Enabled: true
+      Image Topic: /head_camera/image
+      Transport Hint: raw
+      Queue Size: 2
+      Normalize Range: true
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Head Camera Point Cloud
+      Enabled: true
+      Topic: /head_camera/points
+      Queue Size: 5
+      Reliability Policy: Best Effort
+      Durability Policy: Volatile
+      Style: Flat Squares
+      Size (Pixels): 3
+      Color Transformer: RGB8
+      Position Transformer: XYZ
+      Selectable: true
+      Use Fixed Frame: true
+      Decay Time: 0
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Livox Point Cloud
+      Enabled: true
+      Topic: /livox_mid360/points
+      Queue Size: 5
+      Reliability Policy: Best Effort
+      Durability Policy: Volatile
+      Style: Flat Squares
+      Size (Pixels): 3
+      Color Transformer: FlatColor
+      Color: 80; 160; 255
+      Position Transformer: XYZ
+      Selectable: true
+      Use Fixed Frame: true
+      Decay Time: 0
+  Global Options:
+    Fixed Frame: base_link
+    Frame Rate: 30
+    Background Color: 48; 48; 48
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 5
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 1
+      Pitch: 0.6
+      Yaw: 0.6
+Window Geometry:
+  Height: 900
+  Width: 1400

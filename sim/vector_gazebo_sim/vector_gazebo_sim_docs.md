@@ -108,7 +108,8 @@ rviz2
 | Fixed Frame | `base_link` |
 | RobotModel | `/robot_description` |
 | TF | — |
-| Image | `/head_camera/image_raw` |
+| Image | `/head_camera/image` |
+| Depth image | `/head_camera/depth_image` |
 | PointCloud2 | `/head_camera/points` |
 | LaserScan | `/base_lidar/scan` (Reliability: Best Effort) |
 | LaserScan | `/spine_lidar/scan` (Reliability: Best Effort) |
