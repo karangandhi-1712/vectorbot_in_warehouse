@@ -46,6 +46,8 @@ private:
     out.header.stamp = this->get_clock()->now();
     out.header.frame_id = frame_id_;
     out.twist = *msg;
+    // The simulated model's forward axis is opposite the diff-drive x convention.
+    out.twist.linear.x = -msg->linear.x;
     pub_->publish(out);
   }
 

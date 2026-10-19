@@ -16,7 +16,7 @@ def generate_launch_description():
     pkg_share = get_package_share_directory("vector_gazebo_sim")
     sim_launch = os.path.join(pkg_share, "launch", "sim.launch.py")
 
-    rviz_config = os.path.join(pkg_share, "rviz", "vector_sim.rviz")
+    rviz_config = os.path.join(pkg_share, "rviz", "vector_sensors.rviz")
 
     return LaunchDescription([
         IncludeLaunchDescription(PythonLaunchDescriptionSource(sim_launch)),

@@ -18,8 +18,8 @@
   direction: GZ_TO_ROS
 
 # ── HEAD CAMERA (OAK-D Lite — rgbd_camera) ────────────────────────────
-# Gazebo rgbd_camera publishes on base topic /head_camera; subtopics below.
-- ros_topic_name: "/head_camera/image_raw"
+# Gazebo rgbd_camera publishes these topics directly.
+- ros_topic_name: "/head_camera/image"
   gz_topic_name: "/head_camera/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
@@ -31,7 +31,7 @@
   gz_type_name: "gz.msgs.CameraInfo"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/head_camera/depth/image_raw"
+- ros_topic_name: "/head_camera/depth_image"
   gz_topic_name: "/head_camera/depth_image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
